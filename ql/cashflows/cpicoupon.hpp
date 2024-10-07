@@ -191,8 +191,6 @@ namespace QuantLib {
 
         Real indexFixing() const override;
 
-        Real amount() const override;
-
       protected:
         Real baseFixing_;
         Date observationDate_;
@@ -252,7 +250,7 @@ namespace QuantLib {
         Calendar exCouponCalendar_;
         BusinessDayConvention exCouponAdjustment_ = Following;
         bool exCouponEndOfMonth_ = false;
-        Date baseDate_ = Null<Date>();
+        Date baseDate_;
     };
 
 

@@ -124,8 +124,8 @@ void setup() {
 
     std::vector <Real> r;
     std::vector <Date> d;
-    Size nTimesEUR = LENGTH(timesEUR);
-    Size nTimesGBP = LENGTH(timesGBP);
+    Size nTimesEUR = std::size(timesEUR);
+    Size nTimesGBP = std::size(timesGBP);
     for (Size i = 0; i < nTimesEUR; i++) {
         r.push_back(ratesEUR[i]);
         Size ys = (Size)floor(timesEUR[i]);
@@ -172,7 +172,7 @@ void setup() {
     d.clear();
     r.clear();
     Date baseDate = TARGET().advance(eval, -2, Months, ModifiedFollowing);
-    for (Size i = 0; i < LENGTH(yoyEUrates); i++) {
+    for (Size i = 0; i < std::size(yoyEUrates); i++) {
         Date dd = TARGET().advance(baseDate, i, Years, ModifiedFollowing);
         d.push_back(dd);
         r.push_back(yoyEUrates[i]);
@@ -247,7 +247,6 @@ void setupPriceSurface() {
     Natural fixingDays = 0;
     Size lag = 3;// must be 3 because we use an interpolated index (EU)
     Period yyLag = Period(lag,Months);
-    Rate baseRate = 1; // not really used
     DayCounter dc = Actual365Fixed();
     TARGET cal;
     BusinessDayConvention bdc = ModifiedFollowing;
@@ -256,7 +255,7 @@ void setupPriceSurface() {
     ext::shared_ptr<InterpolatedYoYCapFloorTermPriceSurface<Bicubic,Cubic> >
         cfEUprices(new InterpolatedYoYCapFloorTermPriceSurface<Bicubic,Cubic>(
                                        fixingDays,
-                                       yyLag, yoyIndexEU, baseRate,
+                                       yyLag, yoyIndexEU, CPI::Linear,
                                        n, dc,
                                        cal,    bdc,
                                        cStrikesEU, fStrikesEU, cfMaturitiesEU,
